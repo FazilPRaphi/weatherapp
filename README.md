@@ -1,255 +1,477 @@
-# Weather App - Comprehensive Plan Summary
+# Architecture Overview
 
-## 🎉 Plan Created Successfully!
+## Architecture Pattern: Redux + Middleware + Services
 
-A complete, extensive, and scalable plan for your React Native weather app has been created with detailed documentation.
-
-### 🎨 Design Vision
-**Youth · Energising · Refreshing**
-
-The app is designed to appeal to younger users with vibrant, modern aesthetics and delightful interactions. Every element emphasizes freshness through generous whitespace, bold typography, and smooth animations.
-
----
-
-## 📚 Documentation Files Created
-
-1. **PROJECT_PLAN.md** (Complete Blueprint)
-   - 15-phase development plan with detailed breakdowns
-   - Technology stack specifications
-   - Project structure with folder hierarchy
-   - Timeline and success metrics
-   - Dependencies list
-
-2. **DESIGN_SYSTEM.md** (UI/UX Guidelines)
-   - Color palette (Dark Blue → Light Blue gradient buttons)
-   - Typography system (Poppins font family with all weights)
-   - Spacing scale and border radius
-   - Component specifications (buttons, cards, inputs)
-   - Shadows, gradients, and accessibility guidelines
-
-3. **ARCHITECTURE.md** (Technical Foundation)
-   - Layered service-oriented architecture
-   - Redux state structure and data flow
-   - Redux slices breakdown
-   - Service layer design
-   - Middleware architecture
-   - Error handling strategies
-   - Performance optimization tips
-
-4. **SETUP_GUIDE.md** (Getting Started)
-   - Step-by-step environment setup
-   - Installation procedures
-   - Running the app (4 different methods)
-   - NPM commands reference
-   - Common issues and solutions
-   - Git workflow guide
-   - IDE recommendations
-
-5. **OPENWEATHERMAP_API.md** (API Integration)
-   - Complete API endpoint documentation
-   - Request/response formats
-   - Weather condition codes with icons
-   - Data transformation examples
-   - Caching strategy
-   - Rate limiting implementation
-   - Error handling
-   - API testing methods
-
----
-
-## 🏗️ Project Specifications
-
-### Stack
-- **Framework:** React Native (JavaScript, no TypeScript)
-- **Navigation:** React Navigation v6+
-- **State Management:** Redux Toolkit
-- **API:** OpenWeatherMap (Free tier)
-- **Database:** AsyncStorage + SQLite
-- **Notifications:** Firebase Cloud Messaging
-- **UI:** Custom with Poppins font
-
-### Design
-- **Theme:** Blue & White
-- **Button Gradient:** Dark Blue (#003D82) → Light Blue (#00B4DB)
-- **Primary Font:** Poppins (Regular, Medium, SemiBold, Bold)
-- **Target Platforms:** iOS 12+, Android 24+
-
----
-
-## 📱 15-Phase Development Roadmap
-
-| Phase | Tasks | Duration | Status |
-|-------|-------|----------|--------|
-| 1 | Project setup, navigation, core deps | 2-3 days | 📋 Todo |
-| 2 | Design system, components, styles | 3-4 days | 📋 Todo |
-| 3 | Weather API integration | 2-3 days | 📋 Todo |
-| 4 | Location services & permissions | 2-3 days | 📋 Todo |
-| 5 | Redux state management | 2 days | 📋 Todo |
-| 6 | Build 5 main screens | 5-7 days | 📋 Todo |
-| 7 | Local data persistence | 2-3 days | 📋 Todo |
-| 8 | Push notifications & alerts | 3-4 days | 📋 Todo |
-| 9 | Unit & integration testing | 4-5 days | 📋 Todo |
-| 10 | Performance optimization | 2-3 days | 📋 Todo |
-| 11 | Analytics & crash reporting | 2 days | 📋 Todo |
-| 12 | iOS build & App Store submission | 3-4 days | 📋 Todo |
-| 13 | Android build & Play Store submission | 3-4 days | 📋 Todo |
-| 14 | CI/CD pipeline setup | 2-3 days | 📋 Todo |
-| 15 | Documentation & code comments | 2-3 days | 📋 Todo |
-
-**Total Estimated Time:** 42-55 days (6-8 weeks)
-
----
-
-## 🎯 Key Features
-
-✅ Real-time weather data from OpenWeatherMap  
-✅ Current weather display with conditions and icons  
-✅ 5-day hourly forecast  
-✅ Location services with GPS  
-✅ Favorite locations management  
-✅ Push notifications for weather alerts  
-✅ Temperature unit toggle (°C / °F)  
-✅ Data persistence and caching  
-✅ Responsive blue & white UI  
-✅ iOS & Android support  
-✅ Full test coverage (70%+)  
-✅ CI/CD automated pipeline  
-
----
-
-## 🚀 Project Structure Highlights
+This weather app follows a **layered, service-oriented architecture** with clear separation of concerns.
 
 ```
-weather-app/
-├── src/
-│   ├── screens/         (5 main screens)
-│   ├── components/      (Reusable UI components)
-│   ├── services/        (API, Location, Storage)
-│   ├── store/           (Redux slices & middleware)
-│   ├── hooks/           (Custom React hooks)
-│   ├── utils/           (Helpers & formatters)
-│   └── styles/          (Design tokens & themes)
-├── tests/               (Unit & integration tests)
-├── app.json             (Expo/RN config)
-└── .env                 (API keys & secrets)
+┌─────────────────────────────────────────────────────────────┐
+│                    UI LAYER (Screens & Components)          │
+│         HomeScreen, DetailsScreen, SettingsScreen, etc.     │
+└──────────────────────┬──────────────────────────────────────┘
+                       │
+                       ▼
+┌─────────────────────────────────────────────────────────────┐
+│                  HOOKS LAYER (Custom Hooks)                 │
+│     useWeather, useLocation, useFavorites, useSettings      │
+└──────────────────────┬──────────────────────────────────────┘
+                       │
+                       ▼
+┌─────────────────────────────────────────────────────────────┐
+│              STATE MANAGEMENT LAYER (Redux)                 │
+│  • Store (Redux Toolkit)                                    │
+│  • Slices (weatherSlice, locationSlice, etc.)              │
+│  • Middleware (thunks, custom middleware)                   │
+└──────────────────────┬──────────────────────────────────────┘
+                       │
+                       ▼
+┌─────────────────────────────────────────────────────────────┐
+│              SERVICES LAYER (Business Logic)                │
+│  • API Services (OpenWeatherMap)                            │
+│  • Location Services (Geolocation)                          │
+│  • Storage Services (AsyncStorage, SQLite)                  │
+│  • Notification Services (FCM)                              │
+└──────────────────────┬──────────────────────────────────────┘
+                       │
+                       ▼
+┌─────────────────────────────────────────────────────────────┐
+│               EXTERNAL SERVICES & DEVICES                   │
+│  • OpenWeatherMap API                                       │
+│  • Device GPS/Geolocation                                   │
+│  • Firebase Cloud Messaging                                 │
+│  • Local Storage (Phone)                                    │
+└─────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## 💾 Design System Summary
+## Data Flow Diagram
 
-### Design Principles
-- **Youth:** Modern, trendy, vibrant aesthetics for younger demographics
-- **Energising:** Bold colors, dynamic animations, vibrant typography
-- **Refreshing:** Clean layouts, generous whitespace, smooth interactions
-
-### Colors
-- **Primary:** Dark Blue (#003D82) ↔ Light Blue (#00B4DB) [energising]
-- **Background:** White (#FFFFFF) [clean, airy]
-- **Secondary:** Light Gray (#F5F5F5) [breathing room]
-- **Accents:** Vibrant Green, Purple, Orange [youth/energy]
-
-### Typography
-- **Font:** Poppins (rounded, modern, friendly)
-- **Weights:** 400, 500, 600, 700 (bold hierarchy)
-- **Scale:** Large headings for impact, generous line-height for breathing room
-
-### Components
-- **Buttons:** Vibrant gradient with bouncy animations
-- **Cards:** Clean white with intuitive spacing
-- **Icons:** Animated, playful weather icons
-- **Animations:** Smooth, delightful micro-interactions throughout
-
----
-
-## 🔐 Security Best Practices
-
-✅ API keys in .env (never commit)  
-✅ HTTPS only for API calls  
-✅ Input validation and sanitization  
-✅ Secure data storage (KeyChain/Keystore)  
-✅ Permission handling (location, notifications)  
-✅ Error handling without exposing sensitive info  
-
----
-
-## 📊 Performance Targets
-
-- **Load Time:** < 3 seconds
-- **Frame Rate:** 60 FPS minimum
-- **API Response:** < 1 second
-- **Bundle Size:** < 50MB
-- **Test Coverage:** 70%+
-- **Crash Rate:** < 0.1%
-
----
-
-## 🛠️ Technology Dependencies
-
-**Core:**
-- react, react-native, expo
-- @react-navigation (tabs, stack, drawer)
-
-**State & Data:**
-- redux, react-redux, @reduxjs/toolkit
-
-**API & Networking:**
-- axios
-
-**Utilities:**
-- react-native-vector-icons
-- react-native-linear-gradient (for gradients)
-- @react-native-async-storage/async-storage
-
-**Testing:**
-- jest, @testing-library/react-native
-
-**Dev Tools:**
-- babel, eslint, prettier
+```
+User Action (e.g., Search Location)
+    │
+    ▼
+┌─────────────────┐
+│  Screen/UI      │
+│  Component      │
+└────────┬────────┘
+         │ useDispatch(action)
+         ▼
+┌─────────────────────────────────────┐
+│  Redux Action / Thunk               │
+│  dispatch(fetchWeather(location))   │
+└────────┬────────────────────────────┘
+         │
+         ▼
+┌──────────────────────────────────────────────┐
+│  Middleware / Async Thunk                    │
+│  Handle side effects                         │
+└────────┬─────────────────────────────────────┘
+         │
+         ▼
+┌──────────────────────────────────────────────┐
+│  Services Layer                              │
+│  • weatherAPI.getWeather(lat, lon)           │
+│  • geolocationService.getLocation()          │
+│  • storageService.saveFavorite()             │
+└────────┬─────────────────────────────────────┘
+         │
+         ▼
+┌──────────────────────────────────────────────┐
+│  External Data Sources                       │
+│  • API Response                              │
+│  • Device GPS                                │
+│  • Phone Storage                             │
+└────────┬─────────────────────────────────────┘
+         │
+         ▼
+┌──────────────────────────────────────────────┐
+│  Redux Reducer                               │
+│  Process & Store in State                    │
+└────────┬─────────────────────────────────────┘
+         │
+         ▼
+┌──────────────────────────────────────────────┐
+│  Component Re-render                         │
+│  useSelector(state => state.weather)         │
+└────────┬─────────────────────────────────────┘
+         │
+         ▼
+┌──────────────────────────────────────────────┐
+│  Updated UI Display                          │
+│  Show Weather Data                           │
+└──────────────────────────────────────────────┘
+```
 
 ---
 
-## 📖 Next Steps
+## Redux State Structure
 
-1. **Read PROJECT_PLAN.md** for complete phase breakdown (now includes design vision)
-2. **Follow SETUP_GUIDE.md** to set up development environment
-3. **Review DESIGN_SYSTEM.md** for UI implementation guidelines (Youth/Energising/Refreshing)
-4. **Study ARCHITECTURE.md** to understand code organization
-5. **Reference OPENWEATHERMAP_API.md** during API integration
-6. **Begin Phase 1:** Initialize React Native project
+```javascript
+const appState = {
+  weather: {
+    current: {
+      temp: 25.5,
+      feelsLike: 24.2,
+      condition: 'Partly Cloudy',
+      humidity: 65,
+      windSpeed: 12,
+      visibility: 10000,
+      uvIndex: 6,
+      pressure: 1013,
+      icon: '02d',
+    },
+    hourly: [
+      { time: '2024-03-24T13:00:00', temp: 25.5, condition: 'Cloudy' },
+      // ... more hours
+    ],
+    daily: [
+      { date: '2024-03-24', high: 28, low: 18, condition: 'Sunny' },
+      // ... more days
+    ],
+    alerts: [],
+    loading: false,
+    error: null,
+    lastUpdated: 1711270800000,
+  },
+
+  location: {
+    current: {
+      latitude: 40.7128,
+      longitude: -74.0060,
+      city: 'New York',
+      country: 'United States',
+      address: 'New York, NY, USA',
+    },
+    searchHistory: [
+      { city: 'London', lat: 51.5074, lon: -0.1278 },
+      // ... more locations
+    ],
+    loading: false,
+    error: null,
+  },
+
+  favorites: {
+    locations: [
+      { id: 1, city: 'New York', lat: 40.7128, lon: -74.0060 },
+      { id: 2, city: 'London', lat: 51.5074, lon: -0.1278 },
+    ],
+    loading: false,
+    error: null,
+  },
+
+  settings: {
+    temperatureUnit: 'celsius',    // 'celsius' | 'fahrenheit'
+    timeFormat: '24h',              // '24h' | '12h'
+    notificationsEnabled: true,
+    alertsEnabled: true,
+    refreshInterval: 30,            // minutes
+    theme: 'light',                 // 'light' | 'dark'
+  },
+
+  ui: {
+    activeTab: 'home',
+    loading: false,
+    error: null,
+    lastAction: 'FETCH_WEATHER',
+  },
+};
+```
 
 ---
 
-## 💡 Pro Tips
+## Redux Slices
 
-- Start with Expo CLI for rapid development
-- Test on physical devices early (more realistic)
-- Use AsyncStorage for quick persistence, SQLite for complex queries
-- Implement error boundaries at screen level
-- Cache API responses to reduce quota usage
-- Use Redux DevTools for debugging state mutations
-- Monitor bundle size as you add dependencies
-- Write tests as you develop (not after)
+### weatherSlice
+- **State:** Current weather, hourly forecast, daily forecast, alerts
+- **Actions:**
+  - `fetchWeatherRequest()` - Start loading
+  - `fetchWeatherSuccess(payload)` - Store data
+  - `fetchWeatherError(error)` - Store error
+  - `setTemperatureUnit(unit)` - Change unit
+  - `clearWeatherData()` - Reset data
+
+### locationSlice
+- **State:** Current location, search history
+- **Actions:**
+  - `fetchLocationRequest()`
+  - `fetchLocationSuccess(coordinates)`
+  - `fetchLocationError(error)`
+  - `addToSearchHistory(location)`
+  - `clearSearchHistory()`
+
+### favoritesSlice
+- **State:** Array of favorited locations
+- **Actions:**
+  - `addFavorite(location)`
+  - `removeFavorite(id)`
+  - `fetchFavoritesSuccess(favorites)`
+  - `updateFavorite(location)`
+
+### settingsSlice
+- **State:** User preferences
+- **Actions:**
+  - `updateTemperatureUnit(unit)`
+  - `updateTimeFormat(format)`
+  - `toggleNotifications()`
+  - `toggleAlerts()`
+  - `setRefreshInterval(minutes)`
 
 ---
 
-## 📞 Resources
+## Key Services
 
-- **React Native:** https://reactnative.dev/docs/getting-started
-- **Expo:** https://docs.expo.dev/
-- **Redux Toolkit:** https://redux-toolkit.js.org/
-- **OpenWeatherMap:** https://openweathermap.org/api
-- **React Navigation:** https://reactnavigation.org/
+### weatherAPI.js
+```javascript
+Methods:
+- getCurrentWeather(lat, lon) → Promise<WeatherData>
+- getHourlyForecast(lat, lon, hours) → Promise<HourlyData[]>
+- getDailyForecast(lat, lon, days) → Promise<DailyData[]>
+- getWeatherAlerts(lat, lon) → Promise<Alerts[]>
+- getAirQuality(lat, lon) → Promise<AirQualityData>
+
+Features:
+- Automatic retry on failure
+- Response caching (10 min TTL)
+- Rate limiting
+- Error normalization
+```
+
+### geolocationService.js
+```javascript
+Methods:
+- getCurrentLocation() → Promise<Coordinates>
+- watchLocation(callback) → WatchId
+- clearWatch(watchId) → void
+- reverseGeocode(lat, lon) → Promise<Address>
+
+Features:
+- Permission handling (iOS/Android)
+- Fallback to IP-based geolocation
+- High accuracy on demand
+```
+
+### storageService.js
+```javascript
+AsyncStorage Methods:
+- saveFavorite(location) → Promise<void>
+- removeFavorite(id) → Promise<void>
+- getFavorites() → Promise<Location[]>
+- saveSettings(settings) → Promise<void>
+- getSettings() → Promise<Settings>
+
+SQLite Methods:
+- saveWeatherHistory(data) → Promise<void>
+- getWeatherHistory(days) → Promise<HistoryData[]>
+- clearOldData(olderThan) → Promise<void>
+```
+
+### notificationService.js
+```javascript
+Methods:
+- requestPermissions() → Promise<boolean>
+- scheduleLocalNotification(config) → Promise<id>
+- sendAlertNotification(alert) → Promise<void>
+- getDeliveredNotifications() → Promise<Notification[]>
+```
 
 ---
 
-## 📝 Notes
+## Middleware Architecture
 
-All documentation is framework-agnostic and can be adapted as needs change. The 15-phase plan is flexible and can be adjusted based on:
-- Team size and availability
-- Feature prioritization
-- Budget constraints
-- Platform priorities (iOS vs Android first)
+### thunkMiddleware
+- Handles async API calls
+- Dispatches loading/success/error actions
+- Manages request cancellation
 
-**Happy building! 🚀**
+### syncMiddleware
+- Syncs Redux state to AsyncStorage
+- Persists critical data (favorites, settings)
+- Hydrates state on app launch
+
+### errorMiddleware
+- Catches and logs errors
+- Dispatches error actions
+- Integrates with crash reporting
+
+---
+
+## Component Communication Pattern
+
+```
+Screen Component
+    │
+    ├─ useWeather() hook
+    │   └─ useSelector() + useDispatch()
+    │       └─ Redux Store
+    │           └─ Services Layer
+    │               └─ External APIs
+    │
+    ├─ useLocation() hook
+    │
+    ├─ useFavorites() hook
+    │
+    └─ useSettings() hook
+```
+
+### Example Hook Implementation
+```javascript
+// hooks/useWeather.js
+export const useWeather = () => {
+  const dispatch = useDispatch();
+  const weather = useSelector(state => state.weather);
+  
+  const fetchWeather = async (lat, lon) => {
+    dispatch(fetchWeatherRequest());
+    try {
+      const data = await weatherAPI.getCurrentWeather(lat, lon);
+      dispatch(fetchWeatherSuccess(data));
+    } catch (error) {
+      dispatch(fetchWeatherError(error.message));
+    }
+  };
+  
+  return {
+    weather,
+    fetchWeather,
+    loading: weather.loading,
+    error: weather.error,
+  };
+};
+```
+
+---
+
+## Navigation Stack Structure
+
+```
+RootNavigator
+├── Stack Navigation (Authentication check)
+│   ├── SplashScreen
+│   │
+│   └── MainApp (Bottom Tab Navigator)
+│       ├── HomeStack
+│       │   ├── HomeScreen
+│       │   └── DetailsScreen
+│       │
+│       ├── FavoritesStack
+│       │   ├── FavoritesScreen
+│       │   └── FavoriteDetailsScreen
+│       │
+│       ├── SearchStack
+│       │   ├── SearchScreen
+│       │   └── SearchResultsScreen
+│       │
+│       └── SettingsStack
+│           ├── SettingsScreen
+│           ├── UnitSettings
+│           └── NotificationSettings
+```
+
+---
+
+## Error Handling Strategy
+
+### Hierarchical Error Handling
+```javascript
+1. Service Layer
+   └─ Handles API errors, transforms to app errors
+
+2. Middleware Layer
+   └─ Catches async errors, dispatches error actions
+
+3. Redux Reducer
+   └─ Stores error state
+
+4. Component Level
+   └─ Displays error UI, retry mechanism
+
+5. Global Error Boundary
+   └─ Catches crash-level errors
+```
+
+### Error Types
+```javascript
+{
+  API_ERROR: 'Failed to fetch weather data',
+  LOCATION_ERROR: 'Could not determine location',
+  NETWORK_ERROR: 'No internet connection',
+  PERMISSION_ERROR: 'Location permission denied',
+  STORAGE_ERROR: 'Failed to access storage',
+  VALIDATION_ERROR: 'Invalid input data',
+}
+```
+
+---
+
+## Performance Optimization Strategies
+
+1. **Memoization**
+   - React.memo for components
+   - useMemo for expensive calculations
+
+2. **Code Splitting**
+   - Lazy load navigation stacks
+   - Dynamic imports for screens
+
+3. **State Management**
+   - Normalize Redux state
+   - Selector memoization (reselect library)
+
+4. **Caching**
+   - API response caching (10 min)
+   - Image caching with react-native-cached-image
+
+5. **Bundle Optimization**
+   - Tree shaking unused code
+   - Image optimization
+   - Lazy load heavy libraries
+
+---
+
+## Security Considerations
+
+1. **API Keys**
+   - Store in .env file
+   - Use environment variables
+   - Never commit to version control
+
+2. **Data Storage**
+   - Encrypt sensitive data in SQLite
+   - Use KeyChain/Keystore for tokens
+
+3. **Network Security**
+   - HTTPS only
+   - Certificate pinning for critical endpoints
+   - Validate SSL certificates
+
+4. **User Data**
+   - Minimize data collection
+   - Clear data on logout
+   - Comply with privacy policies
+
+---
+
+## Testing Strategy
+
+### Unit Tests
+- Redux slices and actions
+- Service layer functions
+- Utility functions
+- Custom hooks
+
+### Integration Tests
+- Redux store + components
+- API calls + state updates
+- Navigation flows
+
+### E2E Tests
+- Complete user workflows
+- Critical paths
+- Cross-platform testing
+
+### Coverage Target
+- Overall: 70%+
+- Critical services: 85%+
+- Reducers: 90%+
 
